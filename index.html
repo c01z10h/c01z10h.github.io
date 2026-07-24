@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>陈梓鸿 · 3D 设计师作品集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #061214;
+      --bg-2: #0a1e24;
+      --surface: rgba(12, 28, 34, 0.68);
+      --surface-solid: #102328;
+      --accent: #00e5ff;
+      --accent-2: #33f5ff;
+      --accent-3: #00b8d4;
+      --accent-rgb: 0, 229, 255;
+      --text: #f0f9fa;
+      --text-2: #8aa0a6;
+      --border: rgba(0, 229, 255, 0.12);
+      --border-active: rgba(0, 229, 255, 0.45);
+      --glow: rgba(0, 229, 255, 0.28);
+      --bg-glow-1: rgba(0, 229, 255, 0.22);
+      --bg-glow-2: rgba(0, 178, 178, 0.16);
+      --bg-deep: #020c0e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 90% 70% at 15% 25%, var(--bg-glow-1) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 60% at 85% 75%, var(--bg-glow-2) 0%, transparent 50%),
+        linear-gradient(155deg, var(--bg-deep) 0%, var(--bg) 45%, var(--bg-2) 100%);
+      opacity: 0.95;
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.35) 100%);
+      pointer-events: none;
+    }
+    .font-display { font-family: 'DM Serif Display', Georgia, serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .glass {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 24px 0;
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(6, 18, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-color: var(--border);
+      padding: 16px 0;
+    }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+    .nav-logo span { opacity: 0.7; margin-left: 6px; }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: 999px; border: 1px solid var(--border);
+      color: var(--text); text-decoration: none; font-size: 13px; letter-spacing: 0.08em;
+      transition: all 0.3s; background: rgba(var(--accent-rgb), 0.05);
+    }
+    .nav-cta:hover { background: var(--accent); border-color: var(--accent); color: #000; box-shadow: 0 0 24px var(--glow); }
+    .nav-cta svg { width: 14px; height: 14px; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      background: url('work-detail-mockup_files/asset_001.jpg') center center / cover no-repeat;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 80%, transparent 0%, rgba(6,18,20,0.45) 70%, rgba(6,18,20,0.92) 100%);
+      pointer-events: none;
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      background: #000;
+    }
+    .hero-content { position: relative; z-index: 2; flex: 1; }
+    .hero-corner {
+      position: absolute; z-index: 3;
+      bottom: 40px; left: 40px;
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 10px 16px; border-radius: 999px;
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+    }
+    .hero-corner-dot { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: grid; place-items: center; }
+    .hero-corner-dot svg { width: 14px; height: 14px; color: #000; }
+    .hero-corner-text { font-size: 13px; color: var(--text); letter-spacing: 0.05em; }
+    .hero-corner-bars { display: flex; gap: 3px; align-items: center; margin-left: 4px; }
+    .hero-corner-bars span { width: 3px; border-radius: 2px; background: var(--accent); }
+    .scroll-hint {
+      position: absolute; z-index: 3; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-2); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .scroll-hint svg { width: 20px; height: 20px; color: var(--accent); }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); opacity: 0.6; } 50% { transform: translateX(-50%) translateY(8px); opacity: 1; } }
+
+    /* SECTIONS */
+    section { padding: 100px 0; position: relative; }
+    .section-label { font-size: 13px; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent-2); }
+    .section-title { font-size: clamp(28px, 3.5vw, 40px); margin-bottom: 48px; line-height: 1.2; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px; align-items: center; }
+    .about-image { position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; background: linear-gradient(135deg, #102328, #061214); border: 1px solid var(--border); }
+    .about-image::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(var(--accent-rgb),0.12), transparent 60%); z-index: 1; }
+    .about-image img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+    .about-text p { color: var(--text-2); font-size: 17px; line-height: 1.8; margin-bottom: 24px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+    .tag { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: rgba(var(--accent-rgb),0.04); font-size: 13px; color: var(--text-2); transition: all 0.25s; }
+    .tag:hover { border-color: var(--accent); color: var(--accent-2); background: rgba(var(--accent-rgb),0.1); }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .stat-card { padding: 24px; transition: all 0.3s; }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(var(--accent-rgb),0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(var(--accent-rgb),0.08); }
+    .stat-value { font-size: 28px; font-weight: 500; color: var(--accent-2); margin-bottom: 6px; }
+    .stat-label { font-size: 13px; color: var(--text-2); }
+
+    /* PROCESS / TIMELINE */
+    .process-list { display: grid; gap: 20px; }
+    .process-item { display: grid; grid-template-columns: 120px 1fr; gap: 24px; padding: 28px; align-items: start; transition: all 0.3s; }
+    .process-item:hover { background: rgba(var(--accent-rgb),0.04); border-color: rgba(var(--accent-rgb),0.22); }
+    .process-number { font-size: 30px; font-weight: 700; color: rgba(255,255,255,0.1); line-height: 1; }
+    .process-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .process-title { font-size: 18px; margin: 0; }
+    .process-role { font-size: 14px; color: var(--accent-2); font-weight: 500; }
+    .process-date { font-size: 13px; color: var(--text-2); font-family: 'JetBrains Mono', monospace; }
+    .process-desc { color: var(--text-2); font-size: 15px; line-height: 1.7; margin-top: 6px; }
+
+    /* CAPABILITIES */
+    .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .cap-card {
+      padding: 32px 28px; transition: all 0.35s; text-align: center;
+      cursor: pointer; user-select: none;
+    }
+    .cap-card:hover, .cap-card.active {
+      transform: translateY(-6px);
+      border-color: var(--border-active);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25), 0 0 40px rgba(var(--accent-rgb),0.12);
+      background: rgba(var(--accent-rgb), 0.06);
+    }
+    .cap-card.active .cap-icon { background: rgba(var(--accent-rgb),0.18); border-color: var(--border-active); }
+    .cap-card.active .cap-title { color: var(--accent-2); }
+    .cap-icon { width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 16px; background: rgba(var(--accent-rgb),0.08); border: 1px solid var(--border); display: grid; place-items: center; color: var(--accent-2); transition: all 0.35s; }
+    .cap-icon svg { width: 26px; height: 26px; }
+    .cap-title { font-size: 18px; margin-bottom: 10px; transition: color 0.35s; }
+    .cap-desc { color: var(--text-2); font-size: 14px; line-height: 1.7; }
+    .cap-hint {
+      margin-top: 18px; font-size: 12px; color: var(--text-2); letter-spacing: 0.05em;
+      display: inline-flex; align-items: center; gap: 6px; opacity: 0.7;
+    }
+    .cap-hint svg { width: 14px; height: 14px; }
+
+    /* GALLERY — 联动切换 */
+    .gallery-viewport { position: relative; transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+    .gallery-set {
+      position: absolute; top: 0; left: 0; width: 100%;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+    .gallery-set.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* 横向滚动主图 */
+    .gallery-marquee {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 36px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 2%, black 98%, transparent 100%);
+    }
+    .marquee-track {
+      display: flex; align-items: center; gap: 28px;
+      width: max-content;
+      padding: 28px 0;
+      animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+      will-change: transform;
+    }
+    .gallery-marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item {
+      height: 520px; flex-shrink: 0;
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(var(--accent-rgb),0.08);
+      background: var(--bg-2);
+      cursor: zoom-in;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .marquee-item:hover { border-color: rgba(var(--accent-rgb),0.35); box-shadow: 0 0 30px rgba(var(--accent-rgb),0.08); }
+    .marquee-item img { height: 100%; width: auto; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .marquee-item:hover img { transform: scale(1.03); }
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* 竖形网格（可滚轮查看完整长图） */
+    .gallery-portrait { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    /* 视频作品区 */
+    .gallery-video-wrap { margin-top: 8px; }
+    .video-big {
+      position: relative; border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--border); background: #000; margin-bottom: 24px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .video-big video { display: block; width: 100%; height: auto; background: #000; }
+    .video-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .video-item {
+      position: relative; border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--border); background: #000;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .video-item video { display: block; width: 100%; height: auto; background: #000; }
+    [data-video]:hover { border-color: rgba(var(--accent-rgb),0.45); box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(var(--accent-rgb),0.1); }
+    [data-video]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .video-badge {
+      position: absolute; top: 14px; right: 14px; z-index: 2;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 13px; border-radius: 999px;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; font-size: 12px; letter-spacing: 0.04em;
+      backdrop-filter: blur(6px); transition: opacity 0.25s;
+    }
+    .video-badge svg { width: 12px; height: 12px; }
+    [data-video]:hover .video-badge, [data-video]:focus-visible .video-badge { opacity: 0; }
+    .video-sound-btn {
+      position: absolute; bottom: 14px; right: 14px; z-index: 3;
+      width: 40px; height: 40px; border-radius: 50%;
+      display: grid; place-items: center; padding: 0;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.14);
+      color: #fff; cursor: pointer; backdrop-filter: blur(6px);
+      transition: background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+    }
+    .video-sound-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); box-shadow: 0 0 20px var(--glow); }
+    .video-sound-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .video-sound-btn svg { width: 18px; height: 18px; display: none; }
+    .video-sound-btn.is-muted .ic-muted { display: block; }
+    .video-sound-btn:not(.is-muted) .ic-on { display: block; }
+    @media (max-width: 1024px) { .video-grid-3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .video-grid-3 { grid-template-columns: 1fr; } }
+    .portrait-item {
+      aspect-ratio: 3/5;
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface-solid);
+      cursor: zoom-in;
+      position: relative;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .portrait-item:hover { border-color: rgba(var(--accent-rgb),0.35); box-shadow: 0 20px 40px rgba(0,0,0,0.25), 0 0 30px rgba(var(--accent-rgb),0.08); }
+    .portrait-item img {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: auto;
+      transform: translateY(0);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .scroll-hint-badge {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      padding: 8px 14px; border-radius: 999px;
+      background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-2); font-size: 12px; letter-spacing: 0.02em;
+      display: inline-flex; align-items: center; gap: 6px;
+      backdrop-filter: blur(6px);
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .portrait-item:hover .scroll-hint-badge { opacity: 1; }
+    .scroll-hint-badge svg { width: 12px; height: 12px; }
+
+    /* 竖形网格 — 展开更多（折叠的剩余作品） */
+    .gallery-more {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .expand-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 32px; border-radius: 999px;
+      border: 1px solid var(--border); background: rgba(var(--accent-rgb),0.05);
+      color: var(--text); font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+      cursor: pointer; transition: all 0.3s; font-family: 'Outfit', sans-serif;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .expand-btn:hover { border-color: var(--accent); color: var(--accent-2); background: rgba(var(--accent-rgb),0.1); box-shadow: 0 0 30px rgba(var(--accent-rgb),0.14); }
+    .expand-btn svg { width: 16px; height: 16px; transition: transform 0.3s; }
+    .expand-btn.expanded svg { transform: rotate(180deg); }
+    .expand-btn span { position: relative; top: 1px; }
+
+    /* GALLERY HEAD — 动态标题 */
+    .gallery-head { margin-top: 52px; margin-bottom: 28px; }
+    .gallery-title {
+      font-size: clamp(24px, 3vw, 34px); margin-bottom: 10px; line-height: 1.2;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .gallery-sub { color: var(--text-2); font-size: 15px; line-height: 1.7; max-width: 720px; transition: opacity 0.35s ease, transform 0.35s ease; }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(6,18,20,0.96);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox-img {
+      max-width: 90vw; max-height: 82vh;
+      object-fit: contain; border-radius: 12px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+      transform: scale(0.96); transition: transform 0.3s;
+    }
+    .lightbox.active .lightbox-img { transform: scale(1); }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 24px;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.05);
+      color: var(--text); cursor: pointer; display: grid; place-items: center;
+      transition: all 0.25s;
+    }
+    .lightbox-close:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+    .lightbox-close svg { width: 20px; height: 20px; }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.05);
+      color: var(--text); cursor: pointer; display: grid; place-items: center;
+      transition: all 0.25s;
+    }
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+    .lightbox-nav:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+    .lightbox-nav svg { width: 20px; height: 20px; }
+    .lightbox-caption {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      color: var(--text-2); font-size: 14px; text-align: center; padding: 0 24px;
+    }
+
+    /* MODEL SHOWCASE */
+    .model-showcase { padding: 100px 0; overflow: hidden; }
+    .model-inner { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; align-items: center; }
+    .model-left { position: relative; z-index: 1; }
+    .model-title { margin-bottom: 16px; }
+    .model-desc { color: var(--text-2); font-size: 16px; line-height: 1.7; margin-bottom: 36px; max-width: 420px; }
+    .model-tags { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+    .model-tag {
+      display: inline-flex; align-items: center; gap: 12px;
+      width: fit-content; min-width: 190px;
+      padding: 12px 20px; border-radius: 999px;
+      background: rgba(var(--accent-rgb), 0.06);
+      border: 1px solid rgba(var(--accent-rgb), 0.14);
+      color: var(--text-2); font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all 0.3s; user-select: none;
+    }
+    .model-tag:hover { background: rgba(var(--accent-rgb), 0.11); border-color: rgba(var(--accent-rgb), 0.32); color: var(--text); transform: translateX(4px); }
+    .model-tag.active { background: rgba(var(--accent-rgb), 0.18); border-color: var(--accent); color: var(--text); box-shadow: 0 0 26px rgba(var(--accent-rgb), 0.12); }
+    .model-tag.is-missing { opacity: 0.55; border-style: dashed; cursor: not-allowed; }
+    .model-tag.is-missing:hover { transform: none; border-color: rgba(var(--accent-rgb), 0.22); background: rgba(var(--accent-rgb), 0.06); }
+    .tag-icon { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(var(--accent-rgb), 0.35); color: var(--accent-2); font-size: 13px; transition: all 0.3s; }
+    .model-tag.active .tag-icon { background: var(--accent); border-color: var(--accent); color: #000; }
+    .model-right { position: relative; min-height: 520px; }
+    .model-viewer {
+      position: relative; width: 100%; aspect-ratio: 1 / 1;
+      border-radius: 28px; overflow: hidden;
+      background: radial-gradient(circle at 50% 35%, rgba(var(--accent-rgb), 0.07), transparent 55%), rgba(0,0,0,0.12);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.35);
+      cursor: grab;
+    }
+    .model-viewer:active { cursor: grabbing; }
+    .model-viewer canvas { display: block; width: 100%; height: 100%; outline: none; }
+    .model-loader {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      color: var(--text-2); font-size: 14px; letter-spacing: 0.05em;
+      pointer-events: none; transition: opacity 0.3s;
+    }
+    .model-hint { text-align: center; color: var(--text-2); font-size: 13px; margin-top: 16px; letter-spacing: 0.04em; }
+
+    /* CTA */
+    .cta-section { padding: 120px 0; text-align: center; position: relative; overflow: hidden; }
+    .cta-orb { position: absolute; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(var(--accent-rgb),0.18) 0%, transparent 70%); filter: blur(70px); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .cta-title { font-size: clamp(32px, 4vw, 48px); margin-bottom: 16px; position: relative; z-index: 1; }
+    .cta-desc { color: var(--text-2); margin-bottom: 36px; position: relative; z-index: 1; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+    .cta-contact { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin-top: 36px; position: relative; z-index: 1; }
+    .cta-contact a { color: var(--text); text-decoration: none; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s; }
+    .cta-contact a:hover { color: var(--accent-2); }
+    .cta-contact span { color: var(--text-2); font-size: 13px; }
+    .btn { padding: 14px 32px; border-radius: 999px; font-size: 15px; font-weight: 500; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #000; box-shadow: 0 10px 30px var(--glow); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(var(--accent-rgb),0.35); }
+    .btn-secondary { border: 1px solid var(--border); color: var(--text); background: rgba(var(--accent-rgb),0.04); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent-2); background: rgba(var(--accent-rgb),0.08); }
+
+    footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-2); font-size: 13px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .model-inner { grid-template-columns: 1fr; gap: 40px; }
+      .model-right { min-height: auto; order: -1; }
+      .model-tags { flex-direction: row; flex-wrap: wrap; }
+      .model-tag { min-width: auto; }
+      .gallery-portrait { grid-template-columns: repeat(2, 1fr); }
+      .gallery-more { grid-template-columns: repeat(2, 1fr); }
+      .cap-grid { grid-template-columns: repeat(2, 1fr); }
+      .lightbox-nav { display: none; }
+      .marquee-item { height: 420px; }
+    }
+    @media (max-width: 640px) {
+      .hero-corner { left: 20px; bottom: 80px; }
+      .stats-grid, .gallery-portrait, .gallery-more, .cap-grid { grid-template-columns: 1fr; }
+      .process-item { grid-template-columns: 1fr; gap: 12px; }
+      section { padding: 72px 0; }
+      .marquee-item { height: 320px; }
+      .marquee-track { gap: 16px; padding: 16px 0; }
+      .gallery-marquee { border-radius: 12px; }
+      .model-viewer { border-radius: 20px; }
+      .model-tags { gap: 10px; }
+      .model-tag { padding: 10px 16px; font-size: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+
+  <!-- Three.js import map for local offline GLB viewer -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./work-detail-mockup_files/three.module.js",
+      "three/addons/": "./work-detail-mockup_files/three/addons/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <nav id="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">陈梓鸿<span>CHEN ZIHONG</span></a>
+        <a href="#contact" class="nav-cta">
+          联系
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <video class="hero-video" autoplay muted playsinline preload="auto" poster="work-detail-mockup_files/asset_001.jpg">
+      <source src="work-detail-mockup_files/asset_002.mp4" type="video/mp4" />
+    </video>
+    <h1 class="sr-only">陈梓鸿 CHEN ZIHONG — 3D 设计师 / 工业设计作品集</h1>
+    <div class="hero-content"></div>
+    <div class="hero-corner">
+      <div class="hero-corner-dot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="hero-corner-text">工业设计思维 × 电商产品视觉</span>
+      <div class="hero-corner-bars">
+        <span style="height:10px"></span><span style="height:16px"></span><span style="height:12px"></span><span style="height:18px"></span><span style="height:14px"></span>
+      </div>
+    </div>
+    <a href="#about" class="scroll-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+      Scroll
+    </a>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <img src="work-detail-mockup_files/asset_003.jpg" alt="陈梓鸿作品" />
+        </div>
+        <div class="about-text">
+          <div class="section-label">About Me</div>
+          <h2 class="section-title font-display">用设计，连接想法与产品</h2>
+          <p>两年设计工作经验。本人具备良好的创造和创新能力，对设计有执着的追求，学习能力强、吃苦耐劳，善于运用与学习各种设计软件和 AI 工具，将自己的想法快速地转化为设计方案。</p>
+          <p>乐于接触新意的事物并学以致用，了解使用一些剪辑和后期合成软件，能够独立完成从产品建模、渲染到电商视觉合成与宣传视频制作的全流程工作。</p>
+          <div class="tags">
+            <span class="tag">Adobe Photoshop</span>
+            <span class="tag">Adobe Illustrator</span>
+            <span class="tag">Rhino</span>
+            <span class="tag">KeyShot</span>
+            <span class="tag">Cinema 4D</span>
+            <span class="tag">After Effects</span>
+            <span class="tag">Premiere Pro</span>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card glass">
+              <div class="stat-value font-mono">2Y+</div>
+              <div class="stat-label">设计经验</div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-value font-mono">7</div>
+              <div class="stat-label">专业软件技能</div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-value font-mono">Amazon</div>
+              <div class="stat-label">欧美站视觉系统</div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-value font-mono">AI</div>
+              <div class="stat-label">Images/Videos/ Codex</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="container">
+      <div class="section-label">Experience</div>
+      <h2 class="section-title font-display">经历</h2>
+      <div class="process-list">
+        <div class="process-item glass">
+          <div class="process-number font-mono">01</div>
+          <div>
+            <div class="process-head">
+              <h3 class="process-title">东莞理工学院</h3>
+              <span class="process-role">工业设计 · 本科</span>
+              <span class="process-date">2020.09 – 2024.06</span>
+            </div>
+            <p class="process-desc">在校熟练操作 Rhino、KeyShot、Photoshop、Illustrator 等软件，获学院奖学金；大二获中国包装创意设计大赛优秀奖。具备产品效果展示、后期处理与完整设计流程能力。</p>
+          </div>
+        </div>
+        <div class="process-item glass">
+          <div class="process-number font-mono">02</div>
+          <div>
+            <div class="process-head">
+              <h3 class="process-title">东莞得利钟表有限公司</h3>
+              <span class="process-role">实习设计师</span>
+              <span class="process-date">2023.07 – 2023.12</span>
+            </div>
+            <p class="process-desc">为各部门提供设计支持：宣传册、海报与动画设计；参与制作 2024 年配饰流行趋势报告，并参与新设计品牌孵化项目，负责部分手表与配饰设计。</p>
+          </div>
+        </div>
+        <div class="process-item glass">
+          <div class="process-number font-mono">03</div>
+          <div>
+            <div class="process-head">
+              <h3 class="process-title">深圳市康冠科技有限公司</h3>
+              <span class="process-role">工业设计工程师</span>
+              <span class="process-date">2024.05 – 2024.07</span>
+            </div>
+            <p class="process-desc">负责新产品设计调研、外观与材质提案，以及旧产品的建模渲染表现与图片后期处理。</p>
+          </div>
+        </div>
+        <div class="process-item glass">
+          <div class="process-number font-mono">04</div>
+          <div>
+            <div class="process-head">
+              <h3 class="process-title">深圳市朗诚科技有限公司</h3>
+              <span class="process-role">3D 设计师</span>
+              <span class="process-date">2024.11 – 2026.07</span>
+            </div>
+            <p class="process-desc">负责跨境电商图片设计：产品建模与渲染、产品图精修、电商图合成与排版设计、宣传视频剪辑与 AI 生成，以及标签与包装物料设计与修改。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="model-showcase" id="model">
+    <div class="container">
+      <div class="model-inner">
+        <div class="model-left">
+          <div class="section-label">3D Model</div>
+          <h2 class="section-title font-display model-title">苹果手表七珠钢带</h2>
+          <p class="model-desc">高精度 3D 建模，鼠标拖拽可 360° 查看每一处细节；松开鼠标后自动缓慢旋转。</p>
+          <ul class="model-tags" role="list" aria-label="模型选择">
+<li class="model-tag active" data-tag="0" data-model-url="work-detail-mockup_files/asset_004.glb" data-missing="false" data-desc="高精度 3D 建模，鼠标拖拽可 360° 查看表带每一处细节；松开鼠标后自动缓慢旋转。" role="button" tabindex="0" aria-pressed="true"><span class="tag-icon">●</span>苹果手表七珠钢带</li>
+<li class="model-tag" data-tag="1" data-model-url="work-detail-mockup_files/asset_005.glb" data-missing="false" data-desc="游戏外设握持设计，360° 查看人体工学曲面。" role="button" tabindex="0" aria-pressed="false"><span class="tag-icon">+</span>任天堂方向盘手柄握</li>
+<li class="model-tag" data-tag="2" data-model-url="work-detail-mockup_files/asset_006.glb" data-missing="false" data-desc="手持清洁工具建模，展示机身细节与材质分件。" role="button" tabindex="0" aria-pressed="false"><span class="tag-icon">+</span>手持电动清洁刷</li>
+<li class="model-tag" data-tag="3" data-model-url="work-detail-mockup_files/asset_007.glb" data-missing="false" data-desc="智能跳绳产品建模，查看结构比例与握柄设计。" role="button" tabindex="0" aria-pressed="false"><span class="tag-icon">+</span>无线智能跳绳</li>
+          </ul>
+        </div>
+        <div class="model-right">
+          <div class="model-viewer" id="model-viewer" role="img" aria-label="3D 模型，可拖拽旋转">
+            <div class="model-loader">Loading 3D model…</div>
+          </div>
+          <p class="model-hint">拖拽旋转 · 自动旋转 · 双击重置</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+    const container = document.getElementById('model-viewer');
+    const loaderEl = container.querySelector('.model-loader');
+    const titleEl = document.querySelector('.model-title');
+    const descEl = document.querySelector('.model-desc');
+    const showErr = (msg) => { if (loaderEl) { loaderEl.textContent = msg; loaderEl.style.opacity = '1'; } };
+    const showLoading = (msg='Loading 3D model…') => { if (loaderEl) { loaderEl.textContent = msg; loaderEl.style.opacity = '1'; } };
+    let scene, camera, renderer, controls, currentModel, gltfLoader;
+    let initialized = false;
+
+    function init() {
+      if (initialized || !container) return;
+      initialized = true;
+      if (typeof THREE === 'undefined' || !THREE.WebGLRenderer) { showErr('3D 引擎未能加载，请通过本地服务器(http://)打开本页面'); return; }
+      const canvasTest = document.createElement('canvas');
+      const gl = canvasTest.getContext('webgl2') || canvasTest.getContext('webgl');
+      if (!gl) { showErr('当前浏览器/设备未启用 WebGL，无法显示 3D 模型'); return; }
+
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 0.15, 3.4);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      container.appendChild(renderer.domElement);
+
+      // 环境贴图让金属更有质感
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+      scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+
+      // 补光
+      const ambient = new THREE.AmbientLight(0xffffff, 0.35);
+      scene.add(ambient);
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+      keyLight.position.set(4, 5, 4);
+      scene.add(keyLight);
+      const fillLight = new THREE.DirectionalLight(0xc4faff, 0.55);
+      fillLight.position.set(-4, 0, 3);
+      scene.add(fillLight);
+      const rimLight = new THREE.PointLight(0x00e5ff, 0.7);
+      rimLight.position.set(-2, 3, -3);
+      scene.add(rimLight);
+
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.2;
+      controls.enablePan = false;
+      controls.enableZoom = false;
+      controls.target.set(0, 0, 0);
+
+      let dragTimeout;
+      controls.addEventListener('start', () => {
+        controls.autoRotate = false;
+        clearTimeout(dragTimeout);
+      });
+      controls.addEventListener('end', () => {
+        dragTimeout = setTimeout(() => { if (controls) controls.autoRotate = true; }, 2500);
+      });
+
+      container.addEventListener('dblclick', () => {
+        controls.reset();
+        camera.position.set(0, 0.15, 3.4);
+      });
+
+      window.addEventListener('resize', onResize);
+      animate();
+
+      // Draco 解码器：用于加载压缩后的 GLB（显著降低模型体积）
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath('work-detail-mockup_files/three/libs/draco/gltf/');
+      gltfLoader = new GLTFLoader();
+      gltfLoader.setDRACOLoader(dracoLoader);
+
+      // 初始化默认激活的模型
+      const activeTag = document.querySelector('.model-tag.active');
+      if (activeTag) switchModel(activeTag);
+    }
+
+    function fitModel(model) {
+      const box = new THREE.Box3().setFromObject(model);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const targetSize = 1.5;
+      const scale = targetSize / maxDim;
+      model.scale.setScalar(scale);
+      model.position.sub(center.clone().multiplyScalar(scale));
+      // 让模型略微倾斜，展示侧面
+      model.rotation.x = 0.12;
+    }
+
+    function clearModel() {
+      if (!currentModel) return;
+      scene.remove(currentModel);
+      currentModel.traverse((child) => {
+        if (child.geometry) child.geometry.dispose();
+        if (child.material) {
+          if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
+          else child.material.dispose();
+        }
+      });
+      currentModel = null;
+    }
+
+    function loadModel(url) {
+      if (!url) return;
+      showLoading();
+      const loader = gltfLoader || new GLTFLoader();
+      loader.load(url, (gltf) => {
+        clearModel();
+        currentModel = gltf.scene;
+        // 开启最大各向异性过滤：旋转/斜视看贴图（尤其屏幕文字）时边缘更锐，减少 mipmap 二次糊化
+        const maxAniso = renderer.capabilities.getMaxAnisotropy();
+        currentModel.traverse((child) => {
+          if (child.isMesh && child.material) {
+            const mats = Array.isArray(child.material) ? child.material : [child.material];
+            mats.forEach((m) => {
+              ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'emissiveMap', 'aoMap'].forEach((key) => {
+                if (m[key] && m[key].isTexture) {
+                  m[key].anisotropy = maxAniso;
+                  // 避免 UV 略超 [0,1] 时贴图重复/镜像（对屏幕文字尤其重要）
+                  m[key].wrapS = THREE.ClampToEdgeWrapping;
+                  m[key].wrapT = THREE.ClampToEdgeWrapping;
+                  m[key].needsUpdate = true;
+                }
+              });
+              // 修正「屏幕/显示屏」材质的 PBR 参数：
+              // - 七珠钢带：源文件把 metallicRoughness 贴图设为纯黑，导致 roughness=0/metalness=0，屏幕变成完美镜面，表盘图案被环境反射淹没。
+              // - 跳绳：源/优化文件把金属度设为 1，屏幕画面被当成金属反射色而非屏幕内容，同样"看不到"。
+              // 统一改为哑光 + 低金属度，并把屏幕贴图作为自发光，确保画面真正亮出来。
+              const matName = m.name || '';
+              if (matName.includes('屏')) {
+                // 覆盖镜面参数：哑光屏幕，低金属度，屏幕贴图作为自发光提亮
+                m.metalnessMap = null;
+                m.roughnessMap = null;
+                m.metalness = 0.05;
+                m.roughness = 0.85;
+                m.envMapIntensity = 0.3;
+                if (m.map && !m.emissiveMap) {
+                  m.emissiveMap = m.map;
+                }
+                m.emissive = new THREE.Color(0xffffff);
+                m.emissiveIntensity = 0.35;
+                m.needsUpdate = true;
+              }
+            });
+          }
+        });
+        fitModel(currentModel);
+        scene.add(currentModel);
+        if (loaderEl) loaderEl.style.opacity = '0';
+      }, undefined, (err) => {
+        console.error('GLB load failed:', err);
+        const msg = (err && (err.message || (err.target && err.target.statusText))) ? (err.message || (err.target && err.target.statusText) || '加载失败') : '加载失败';
+        showErr('3D 模型加载失败：' + msg + '（请确认通过本地服务器打开）');
+      });
+    }
+
+    function switchModel(tagEl) {
+      const url = tagEl.dataset.modelUrl;
+      const desc = tagEl.dataset.desc;
+      const name = tagEl.textContent.trim();
+      const isMissing = tagEl.dataset.missing === 'true';
+
+      document.querySelectorAll('.model-tag').forEach((t) => {
+        t.classList.remove('active');
+        t.setAttribute('aria-pressed', 'false');
+        const icon = t.querySelector('.tag-icon');
+        if (icon) icon.textContent = '+';
+      });
+      tagEl.classList.add('active');
+      tagEl.setAttribute('aria-pressed', 'true');
+      const icon = tagEl.querySelector('.tag-icon');
+      if (icon) icon.textContent = '●';
+
+      if (titleEl) titleEl.textContent = name;
+      if (descEl) descEl.textContent = desc || '';
+
+      if (isMissing || !url) {
+        clearModel();
+        showErr('模型文件暂未提供');
+        return;
+      }
+
+      loadModel(url);
+    }
+
+    document.querySelectorAll('.model-tag').forEach((tag) => {
+      tag.addEventListener('click', () => switchModel(tag));
+      tag.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tag.click(); }
+      });
+    });
+
+    function onResize() {
+      if (!camera || !renderer || !container) return;
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (controls) controls.update();
+      if (renderer && scene && camera) renderer.render(scene, camera);
+    }
+
+    // 进入视口才初始化，节省资源
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !initialized) init();
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    observer.observe(container);
+  </script>
+  <script>
+    // 直接双击(file://)打开时，ES module 会被浏览器拦截，3D 无法加载；提示用本地服务器
+    (function(){
+      if (location.protocol === 'file:') {
+        var el = document.querySelector('#model-viewer .model-loader');
+        if (el) { el.textContent = '请通过本地服务器打开（如 python -m http.server），勿直接双击文件'; el.style.opacity = '1'; }
+      }
+    })();
+  </script>
+
+  <section id="capabilities" style="background: var(--bg-2);">
+    <div class="container">
+      <div class="section-label">Capabilities</div>
+      <h2 class="section-title font-display">核心能力</h2>
+      <div class="cap-grid" id="capGrid" role="tablist" aria-label="作品分类">
+        <div class="cap-card glass active" data-gallery="0" role="tab" tabindex="0" aria-selected="true">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3 class="cap-title">产品建模与渲染</h3>
+          <p class="cap-desc">使用 Rhino 建模，KeyShot 渲染高品质产品表现图，呈现材质与光影细节。</p>
+          <div class="cap-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            悬停查看作品
+          </div>
+        </div>
+        <div class="cap-card glass" data-gallery="1" role="tab" tabindex="0" aria-selected="false">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h3 class="cap-title">电商视觉合成</h3>
+          <p class="cap-desc">产品图精修、电商主图与详情页合成排版，适配跨境平台视觉规范，提升点击与转化。</p>
+          <div class="cap-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            悬停查看作品
+          </div>
+        </div>
+        <div class="cap-card glass" data-gallery="2" role="tab" tabindex="0" aria-selected="false">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <h3 class="cap-title">视频生成与剪辑</h3>
+          <p class="cap-desc">视频剪辑（After Effects / Premiere Pro）与 AI 辅助内容生成（TapNow / LibTV），覆盖产品短片与社媒素材。</p>
+          <div class="cap-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            悬停查看作品
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-head">
+        <div class="section-label">Visual Gallery</div>
+        <h3 class="gallery-title font-display" id="galleryTitle">产品建模与渲染作品</h3>
+        <p class="gallery-sub" id="gallerySub">上方为横向滚动的产品渲染作品，下方为竖形长图作品集，悬停后滚动鼠标可查看完整画面。</p>
+      </div>
+
+      <div class="gallery-viewport" id="galleryViewport">
+<div class="gallery-set active" data-set="0">
+<div class="gallery-marquee" style="--marquee-count:13;--marquee-duration:65s;">
+  <div class="marquee-track">
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_008.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_009.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_010.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_011.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_012.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_013.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_014.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_015.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_016.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_017.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_018.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_019.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_020.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_008.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_009.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_010.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_011.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_012.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_013.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_014.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_015.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_016.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_017.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_018.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_019.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="产品建模与渲染作品 滚动作品"><img src="work-detail-mockup_files/asset_020.jpg" alt="产品建模与渲染作品 滚动作品" loading="lazy" /></div>
+  </div>
+</div>
+<div class="gallery gallery-portrait">
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_021.jpg" alt="产品建模与渲染作品 作品 1" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_022.jpg" alt="产品建模与渲染作品 作品 2" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_023.jpg" alt="产品建模与渲染作品 作品 3" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_024.jpg" alt="产品建模与渲染作品 作品 4" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_025.jpg" alt="产品建模与渲染作品 作品 5" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_026.jpg" alt="产品建模与渲染作品 作品 6" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+</div>
+<div class="gallery-more" style="display:none;">
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_027.jpg" alt="产品建模与渲染作品 作品 7" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_028.jpg" alt="产品建模与渲染作品 作品 8" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_029.jpg" alt="产品建模与渲染作品 作品 9" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+</div>
+<div style="text-align:center; margin-top:32px;">
+<button class="expand-btn" type="button" onclick="toggleExpand(this)" aria-expanded="false">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+<span>展开更多作品</span>
+</button>
+</div>
+</div>
+<div class="gallery-set" data-set="1">
+<div class="gallery-marquee" style="--marquee-count:10;--marquee-duration:50s;">
+  <div class="marquee-track">
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_030.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_031.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_032.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_033.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_034.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_035.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_036.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_037.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_038.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_039.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_030.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_031.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_032.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_033.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_034.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_035.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_036.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_037.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_038.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+    <div class="marquee-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="电商视觉合成作品 滚动作品"><img src="work-detail-mockup_files/asset_039.jpg" alt="电商视觉合成作品 滚动作品" loading="lazy" /></div>
+  </div>
+</div>
+<div class="gallery gallery-portrait">
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_040.jpg" alt="电商视觉合成作品 作品 1" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_041.jpg" alt="电商视觉合成作品 作品 2" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_042.jpg" alt="电商视觉合成作品 作品 3" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_043.jpg" alt="电商视觉合成作品 作品 4" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_044.jpg" alt="电商视觉合成作品 作品 5" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_045.jpg" alt="电商视觉合成作品 作品 6" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+</div>
+<div class="gallery-more" style="display:none;">
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_046.jpg" alt="电商视觉合成作品 作品 7" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_047.jpg" alt="电商视觉合成作品 作品 8" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+  <div class="gallery-item portrait-item" onclick="openLightboxFrom(this)" role="button" tabindex="0" aria-label="查看大图"><img src="work-detail-mockup_files/asset_048.jpg" alt="电商视觉合成作品 作品 9" loading="lazy" /><div class="scroll-hint-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>滚动查看</div></div>
+</div>
+<div style="text-align:center; margin-top:32px;">
+<button class="expand-btn" type="button" onclick="toggleExpand(this)" aria-expanded="false">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+<span>展开更多作品</span>
+</button>
+</div>
+</div>
+<div class="gallery-set" data-set="2">
+<div class="gallery-video-wrap">
+  <div class="video-big" data-video tabindex="0" role="button" aria-label="悬停播放横版视频">
+    <video src="work-detail-mockup_files/asset_049.mp4" muted loop playsinline preload="metadata"></video>
+    <button class="video-sound-btn is-muted" type="button" aria-label="开启声音" aria-pressed="false"><svg class="ic-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></button>
+    <div class="video-badge"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>悬停播放</div>
+  </div>
+  <div class="video-grid-3">
+    <div class="video-item" data-video tabindex="0" role="button" aria-label="悬停播放竖屏视频">
+      <video src="work-detail-mockup_files/asset_050.mp4" muted loop playsinline preload="metadata"></video>
+      <button class="video-sound-btn is-muted" type="button" aria-label="开启声音" aria-pressed="false"><svg class="ic-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></button>
+      <div class="video-badge"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>悬停播放</div>
+    </div>
+    <div class="video-item" data-video tabindex="0" role="button" aria-label="悬停播放竖屏视频">
+      <video src="work-detail-mockup_files/asset_051.mp4" muted loop playsinline preload="metadata"></video>
+      <button class="video-sound-btn is-muted" type="button" aria-label="开启声音" aria-pressed="false"><svg class="ic-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></button>
+      <div class="video-badge"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>悬停播放</div>
+    </div>
+    <div class="video-item" data-video tabindex="0" role="button" aria-label="悬停播放竖屏视频">
+      <video src="work-detail-mockup_files/asset_052.mp4" muted loop playsinline preload="metadata"></video>
+      <button class="video-sound-btn is-muted" type="button" aria-label="开启声音" aria-pressed="false"><svg class="ic-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg><svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" stroke="none"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg></button>
+      <div class="video-badge"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>悬停播放</div>
+    </div>
+  </div>
+</div>
+</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="cta-orb"></div>
+    <div class="container">
+      <h2 class="cta-title font-display">一起聊聊设计？</h2>
+      <p class="cta-desc">无论是产品 3D 表现、电商视觉，欢迎联系我讨论合作。</p>
+      <div class="cta-buttons">
+        <a href="tel:17303087750" class="btn btn-secondary">电话联系</a>
+        <a href="mailto:chenzihong01@foxmail.com" class="btn btn-primary">邮箱联系 →</a>
+      </div>
+      <div class="cta-contact">
+        <a href="tel:17303087750"><span>电话</span> 17303087750</a>
+        <a href="mailto:chenzihong01@foxmail.com"><span>邮箱</span> chenzihong01@foxmail.com</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 陈梓鸿 · 3D Designer &amp; Industrial Designer
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品大图预览">
+    <button class="lightbox-close" type="button" aria-label="关闭" onclick="closeLightbox()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="上一张" onclick="prevLightbox()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="下一张" onclick="nextLightbox()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // 核心能力 ↔ 作品视觉 联动切换
+    const capCards = document.querySelectorAll('#capGrid .cap-card');
+    const gallerySets = document.querySelectorAll('#galleryViewport .gallery-set');
+    const viewport = document.getElementById('galleryViewport');
+    const galleryTitle = document.getElementById('galleryTitle');
+    const gallerySub = document.getElementById('gallerySub');
+
+    const galleryTitles = [
+      '产品建模与渲染作品',
+      '电商视觉合成作品',
+      '视频生成与剪辑作品'
+    ];
+    const gallerySubs = [
+      '上方为横向滚动的产品渲染作品，下方为竖形长图作品集，悬停后滚动鼠标可查看完整画面。',
+      '上方为横向滚动的电商主图与 banner，下方为竖形详情页长图，悬停后滚动鼠标可查看完整画面。',
+      '上方为横版大视频，下方为三列竖屏视频；将鼠标移到视频上即可自动播放，移开暂停。'
+    ];
+
+    function setGalleryHeight(setEl) {
+      if (!setEl || !viewport) return;
+      viewport.style.height = setEl.scrollHeight + 'px';
+    }
+
+    let currentIndex = 0;
+    function switchGallery(index) {
+      index = parseInt(index, 10);
+      if (index === currentIndex) return;
+      currentIndex = index;
+
+      capCards.forEach((card, i) => {
+        const isActive = i === index;
+        card.classList.toggle('active', isActive);
+        card.setAttribute('aria-selected', String(isActive));
+      });
+      gallerySets.forEach((set, i) => {
+        const isActive = i === index;
+        set.classList.toggle('active', isActive);
+        if (isActive) setGalleryHeight(set);
+      });
+
+      // 切换离开视频集时暂停所有视频，节省资源
+      if (index !== 2) pauseAllVideos();
+
+      galleryTitle.style.opacity = '0';
+      galleryTitle.style.transform = 'translateY(8px)';
+      gallerySub.style.opacity = '0';
+      gallerySub.style.transform = 'translateY(8px)';
+      setTimeout(() => {
+        galleryTitle.textContent = galleryTitles[index];
+        gallerySub.textContent = gallerySubs[index];
+        galleryTitle.style.opacity = '1';
+        galleryTitle.style.transform = 'translateY(0)';
+        gallerySub.style.opacity = '1';
+        gallerySub.style.transform = 'translateY(0)';
+      }, 200);
+    }
+
+    capCards.forEach(card => {
+      card.addEventListener('mouseenter', () => switchGallery(card.dataset.gallery));
+      card.addEventListener('click', () => switchGallery(card.dataset.gallery));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          switchGallery(card.dataset.gallery);
+        }
+      });
+    });
+
+    // 展开 / 收起「更多作品」
+    function toggleExpand(btn) {
+      const setEl = btn.closest('.gallery-set');
+      const more = setEl ? setEl.querySelector('.gallery-more') : null;
+      if (!more) return;
+      const expandNow = more.style.display === 'none';
+      more.style.display = expandNow ? 'grid' : 'none';
+      btn.classList.toggle('expanded', expandNow);
+      btn.setAttribute('aria-expanded', String(expandNow));
+      btn.querySelector('span').textContent = expandNow ? '收起作品' : '展开更多作品';
+      setGalleryHeight(setEl);
+    }
+
+    // 视频悬停自动播放 / 移开暂停并复位
+    function pauseAllVideos() {
+      document.querySelectorAll('.gallery-set[data-set="2"] video').forEach(v => {
+        v.pause();
+        try { v.currentTime = 0; } catch (e) {}
+      });
+    }
+
+    function initVideoHover() {
+      const set2 = document.querySelector('.gallery-set[data-set="2"]');
+      document.querySelectorAll('.gallery-set[data-set="2"] [data-video]').forEach(wrap => {
+        const v = wrap.querySelector('video');
+        if (!v) return;
+        wrap.addEventListener('mouseenter', () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); });
+        wrap.addEventListener('focus', () => { const p = v.play(); if (p && p.catch) p.catch(() => {}); });
+        wrap.addEventListener('mouseleave', () => { v.pause(); try { v.currentTime = 0; } catch (e) {} });
+        wrap.addEventListener('blur', () => { v.pause(); try { v.currentTime = 0; } catch (e) {} });
+        // 元数据加载后（视频有实际高度）若当前为激活集，重新计算容器高度
+        v.addEventListener('loadedmetadata', () => {
+          if (set2.classList.contains('active')) setGalleryHeight(set2);
+        });
+        // 声音开关：点击是用户手势，可合法开启原视频声音
+        const soundBtn = wrap.querySelector('.video-sound-btn');
+        if (soundBtn) {
+          soundBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            v.muted = !v.muted;
+            if (!v.muted) {
+              const p = v.play();
+              if (p && p.catch) p.catch(() => {});
+            }
+            soundBtn.classList.toggle('is-muted', v.muted);
+            soundBtn.setAttribute('aria-pressed', String(!v.muted));
+            soundBtn.setAttribute('aria-label', v.muted ? '开启声音' : '关闭声音');
+          });
+        }
+      });
+    }
+
+    // 竖形网格：悬停时滚轮上下滑动查看完整长图
+    function initPortraitScroll() {
+      document.querySelectorAll('.portrait-item').forEach(item => {
+        const img = item.querySelector('img');
+        if (!img) return;
+        let y = 0;
+        function clamp() {
+          if (!img.naturalWidth) return;
+          const renderedH = img.naturalHeight * (item.offsetWidth / img.naturalWidth);
+          const max = Math.max(0, renderedH - item.offsetHeight);
+          y = Math.max(-max, Math.min(0, y));
+        }
+        item.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          y -= e.deltaY;
+          clamp();
+          img.style.transform = `translateY(${y}px)`;
+        }, { passive: false });
+        item.addEventListener('mouseleave', () => {
+          y = 0;
+          img.style.transform = 'translateY(0)';
+        });
+        img.addEventListener('load', () => { y = 0; img.style.transform = 'translateY(0)'; });
+      });
+    }
+
+    // LIGHTBOX
+    let currentLightboxImages = [];
+    let currentLightboxIndex = 0;
+
+    function openLightboxFrom(el) {
+      const setEl = el.closest('.gallery-set');
+      if (!setEl) return;
+      const imgs = Array.from(setEl.querySelectorAll('img')).filter(img => img.offsetParent !== null);
+      const imgEl = el.tagName === 'IMG' ? el : el.querySelector('img');
+      currentLightboxImages = imgs.map(img => ({ src: img.src, alt: img.alt }));
+      currentLightboxIndex = Math.max(0, imgs.indexOf(imgEl));
+      updateLightbox();
+      const lb = document.getElementById('lightbox');
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightbox() {
+      const img = currentLightboxImages[currentLightboxIndex];
+      const imgEl = document.getElementById('lightboxImg');
+      imgEl.src = img.src;
+      imgEl.alt = img.alt;
+      document.getElementById('lightboxCaption').textContent = `${currentLightboxIndex + 1} / ${currentLightboxImages.length} · ${img.alt}`;
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function nextLightbox() {
+      currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length;
+      updateLightbox();
+    }
+
+    function prevLightbox() {
+      currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length;
+      updateLightbox();
+    }
+
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox') closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      const lb = document.getElementById('lightbox');
+      if (!lb.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextLightbox();
+      if (e.key === 'ArrowLeft') prevLightbox();
+    });
+
+    // 首页开场视频：进入视口自动播放，播完停尾帧（不循环）
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo) {
+      const playHero = () => { const p = heroVideo.play(); if (p && p.catch) p.catch(() => {}); };
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) playHero(); });
+      }, { threshold: 0.25 });
+      heroObserver.observe(document.querySelector('.hero'));
+      heroVideo.addEventListener('ended', () => heroVideo.pause());
+    }
+
+    // 初始化
+    window.addEventListener('load', () => {
+      const activeSet = document.querySelector('#galleryViewport .gallery-set.active');
+      setGalleryHeight(activeSet);
+      initPortraitScroll();
+      initVideoHover();
+    });
+    window.addEventListener('resize', () => {
+      const activeSet = document.querySelector('#galleryViewport .gallery-set.active');
+      setGalleryHeight(activeSet);
+    });
+
+    // 滚动进场动画
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('section > .container > *').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# ===== 源文件 / 大体积源（不进仓库）=====
+模型/
+首页/
+产品建模与渲染作品/
+电商视觉合成作品/
+视频生成与剪辑/
+portfolio/
+
+# ===== 构建产物 / 备份 / 离线包 =====
+*.zip
+work-detail-mockup-original.html
+work-detail-mockup.html
+
+# ===== 本地构建脚本与临时工具（仅根目录，不影响 assets 内的 three 模块）=====
+/gen_mockup.py
+/build_share.py
+/inspect*.js
+/render_test*.js
+/replace_screen.js
+/opt_glb3.js
+/validate_draco.js
+/extract*.js
+
+# ===== 本地记忆 / 系统文件 =====
+.workbuddy/
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
