@@ -669,7 +669,7 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.0;
+      renderer.toneMappingExposure = 1.15;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       container.appendChild(renderer.domElement);
 
@@ -770,12 +770,14 @@
               ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'emissiveMap', 'aoMap'].forEach((key) => {
                 if (m[key] && m[key].isTexture) {
                   m[key].anisotropy = maxAniso;
-                  // 避免 UV 略超 [0,1] 时贴图重复/镜像（对屏幕文字尤其重要）
-                  m[key].wrapS = THREE.ClampToEdgeWrapping;
-                  m[key].wrapT = THREE.ClampToEdgeWrapping;
                   m[key].needsUpdate = true;
                 }
               });
+              // GLTFLoader 会保留模型导出时的 Repeat / MirroredRepeat 设置。
+              // 不要在这里强制 ClampToEdge，否则 UV 超出 0–1 的部位会只取贴图边缘，
+              // 看起来就像整件模型都没有贴图。
+              if (m.map) m.map.colorSpace = THREE.SRGBColorSpace;
+              if (m.emissiveMap) m.emissiveMap.colorSpace = THREE.SRGBColorSpace;
               // 修正「屏幕/显示屏」材质的 PBR 参数：
               // - 七珠钢带：源文件把 metallicRoughness 贴图设为纯黑，导致 roughness=0/metalness=0，屏幕变成完美镜面，表盘图案被环境反射淹没。
               // - 跳绳：源/优化文件把金属度设为 1，屏幕画面被当成金属反射色而非屏幕内容，同样"看不到"。
@@ -792,7 +794,7 @@
                   m.emissiveMap = m.map;
                 }
                 m.emissive = new THREE.Color(0xffffff);
-                m.emissiveIntensity = 0.35;
+                m.emissiveIntensity = 0.8;
                 m.needsUpdate = true;
               }
             });
@@ -870,7 +872,7 @@
     (function(){
       if (location.protocol === 'file:') {
         var el = document.querySelector('#model-viewer .model-loader');
-        if (el) { el.textContent = '请通过本地服务器打开（如 python -m http.server），勿直接双击文件'; el.style.opacity = '1'; }
+        if (el) { el.textContent = '请先双击“启动网站.cmd”，服务器启动后会自动打开本页面'; el.style.opacity = '1'; }
       }
     })();
   </script>
